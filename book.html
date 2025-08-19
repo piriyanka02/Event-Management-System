@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Event - Event Management System</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Event Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item mx-3"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item mx-3"><a class="nav-link active" href="events.html">Events</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="Register.html">Register/Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero" style="background-color:#2a3eb1;">
+    <div class="hero-content text-center">
+      <h1>Book Your Event Now</h1>
+      <p>Fill out the form below to reserve your spot for the event of your choice!</p>
+    </div>
+  </div>
+
+  <!-- Booking Form -->
+  <div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <div class="card p-4 shadow">
+          <h3 class="text-center mb-4">Event Booking Form</h3>
+          <form id="booking-form">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="name" id="booking-name" class="form-control" placeholder="Enter your full name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" id="booking-email" class="form-control" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="text" name="phone" id="booking-phone" class="form-control" placeholder="Enter your phone number">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Select Event</label>
+              <select name="event" id="booking-event" class="form-select">
+                <option value="">-- Select an Event --</option>
+                <option value="Music Concert">Music Concert</option>
+                <option value="Art Exhibition">Art Exhibition</option>
+                <option value="Tech Workshop">Tech Workshop</option>
+                <option value="Food Festival">Food Festival</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Number of Tickets</label>
+              <input type="number" name="tickets" id="booking-tickets" class="form-control" min="1" value="1">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Additional Message</label>
+              <textarea name="message" id="booking-message" class="form-control" rows="3" placeholder="Any special requests?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Book Event</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    Developed by Piriyanka | 2025
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Booking Form JS -->
+  <script>
+    document.getElementById("booking-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      let name = document.getElementById("booking-name").value;
+      let email = document.getElementById("booking-email").value;
+      let phone = document.getElementById("booking-phone").value;
+      let event = document.getElementById("booking-event").value;
+      let tickets = document.getElementById("booking-tickets").value;
+
+      if(name === "" || email === "" || phone === "" || event === "" || tickets === ""){
+        alert("Please fill all required fields!");
+        return;
+      }
+
+      if(!email.includes("@")){
+        alert("Invalid email!");
+        return;
+      }
+
+      // Send booking to PHP
+      fetch('book_submit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&event=${encodeURIComponent(event)}&tickets=${encodeURIComponent(tickets)}&message=${encodeURIComponent(document.getElementById("booking-message").value)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        if(data.status === "success") {
+          document.getElementById("booking-form").reset();
+        }
+      })
+      .catch(err => alert("Error sending booking!"));
+    });
+  </script>
+</body>
+</html>

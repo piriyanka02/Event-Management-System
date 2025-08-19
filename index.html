@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Management System</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Event Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item mx-3"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="events.html">Events</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item mx-3"><a class="nav-link" href="Register.html">Register/Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content text-center">
+      <h1>Welcome to Event Management System</h1>
+      <p>Manage events, registrations, and schedules efficiently!</p>
+      <a href="Register.html" class="btn btn-primary btn-lg">Register Now</a>
+    </div>
+  </div>
+
+  <!-- Featured Events -->
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Upcoming Events</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Music Festival</h5>
+            <p class="card-text">Join us for a night of music and fun.</p>
+            <p class="text-muted">Date: 25 Aug 2025</p>
+            <a href="event_details.php?id=1" class="btn btn-primary btn-sm">View</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Tech Workshop</h5>
+            <p class="card-text">Learn new tech skills in our hands-on workshop.</p>
+            <p class="text-muted">Date: 30 Aug 2025</p>
+            <a href="event_details.php?id=2" class="btn btn-primary btn-sm">View</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Art Exhibition</h5>
+            <p class="card-text">Explore amazing artwork by local artists.</p>
+            <p class="text-muted">Date: 5 Sep 2025</p>
+            <a href="event_details.php?id=3" class="btn btn-primary btn-sm">View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="container features mt-5">
+    <h2 class="text-center mb-4">Why Choose Us?</h2>
+    <div class="row text-center">
+      <div class="col-md-4 mb-3">
+        <i class="bi bi-person-check"></i>
+        <h5 class="mt-2">Easy Registration</h5>
+        <p>Register in just a few clicks.</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <i class="bi bi-calendar-event"></i>
+        <h5 class="mt-2">Manage Events</h5>
+        <p>Organize events and track attendance easily.</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <i class="bi bi-speedometer2"></i>
+        <h5 class="mt-2">Real-time Updates</h5>
+        <p>Get live updates on all events and registrations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    Developed by Piriyanka | 2025
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

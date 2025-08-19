@@ -1,0 +1,153 @@
+.navbar {
+  background: #1e3c72;
+  padding: 1rem 1.5rem;
+}
+
+.navbar-brand {
+  font-size: 1.5rem; /* smaller than before */
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem; /* reduced */
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px; /* smaller underline */
+  bottom: -2px;
+  left: 0;
+  background-color: #ffd700;
+  transition: width 0.3s;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffd700;
+}
+
+/* Hero Section with Background Image */
+.hero {
+  text-align: center;
+  margin-top: 0;
+  background: url('../images/hero-image.png') no-repeat center center;
+  background-size: cover;
+  color: #fff;
+  padding: 150px 20px; /* reduced height */
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+
+.hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.hero p {
+  font-size: 1.1rem; /* reduced */
+  margin-top: 8px;
+}
+
+.hero .btn-primary {
+  font-size: 1rem; /* smaller button text */
+  padding: 0.6rem 1.5rem;
+  margin-top: 15px;
+}
+
+/* Featured Events - Cards */
+.card {
+  transition: transform 0.4s, box-shadow 0.4s;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.card-title {
+  font-size: 1.4rem; /* smaller title */
+  font-weight: 600;
+  color: #1e3c72;
+}
+
+.card-text {
+  font-size: 1rem; /* smaller */
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.card .btn-primary {
+  transition: background 0.3s, transform 0.3s;
+}
+
+.card .btn-primary:hover {
+  background-color: #2a5298;
+  transform: scale(1.03);
+}
+
+/* Features Section */
+.features .bi {
+  font-size: 2rem; /* smaller icons */
+  color: #2a5298;
+}
+
+.features h5 {
+  font-size: 1.2rem; /* reduced */
+  font-weight: 600;
+}
+
+.features p {
+  font-size: 0.95rem; /* smaller */
+}
+
+/* Footer */
+footer {
+  background-color: #1e3c72;
+  color: #fff;
+  padding: 20px 0;
+  margin-top: 40px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Responsive hero heading for large screens */
+@media (min-width: 992px) {
+  .hero h1 {
+    font-size: 4rem; /* reduced from 5rem */
+  }
+}
+
+.card-img-top {
+  width: 100%;
+  height: 250px;   /* card height fix pannalam */
+  object-fit: cover; /* photo crop pannidum, distortion illa */
+  border-radius: 10px; /* rounded edges for attractive look */
+}
