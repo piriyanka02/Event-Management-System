@@ -1,4 +1,3 @@
-/* Navbar gradient and style */
 .navbar {
   background: #1e3c72;
   padding: 1rem 1.5rem;
@@ -152,4 +151,3 @@ footer {
   object-fit: cover; /* photo crop pannidum, distortion illa */
   border-radius: 10px; /* rounded edges for attractive look */
 }
-

@@ -49,36 +49,36 @@
         <div class="tab-content" id="authTabsContent">
           <!-- Register Form -->
           <div class="tab-pane fade show active" id="register">
-            <form onsubmit="return validateRegister()">
+            <form method="POST" action="register.php" onsubmit="return validateRegister()">
               <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" id="reg-name" class="form-control" placeholder="Enter Name">
+                <input type="text" name="reg-name" id="reg-name" class="form-control" placeholder="Enter Name">
               </div>
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" id="reg-email" class="form-control" placeholder="Enter Email">
+                <input type="email" name="reg-email" id="reg-email" class="form-control" placeholder="Enter Email">
               </div>
               <div class="mb-3">
                 <label class="form-label">Phone</label>
-                <input type="text" id="reg-phone" class="form-control" placeholder="Enter Phone">
+                <input type="text" name="reg-phone" id="reg-phone" class="form-control" placeholder="Enter Phone">
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" id="reg-password" class="form-control" placeholder="Enter Password">
+                <input type="password" name="reg-password" id="reg-password" class="form-control" placeholder="Enter Password">
               </div>
               <button type="submit" class="btn btn-primary w-100">Register</button>
             </form>
           </div>
           <!-- Login Form -->
           <div class="tab-pane fade" id="login">
-            <form onsubmit="return validateLogin()">
+            <form method="POST" action="login.php" onsubmit="return validateLogin()">
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" id="login-email" class="form-control" placeholder="Enter Email">
+                <input type="email" name="login-email" id="login-email" class="form-control" placeholder="Enter Email">
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" id="login-password" class="form-control" placeholder="Enter Password">
+                <input type="password" name="login-password" id="login-password" class="form-control" placeholder="Enter Password">
               </div>
               <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
@@ -110,7 +110,6 @@ function validateRegister() {
   if(phone.length !== 10 || isNaN(phone)){ alert("Phone must be 10 digits!"); return false; }
   if(password.length < 6){ alert("Password must be at least 6 characters!"); return false; }
 
-  alert("Registration successful!");
   return true;
 }
 
@@ -125,7 +124,6 @@ function validateLogin() {
   if(!email.includes("@")){ alert("Invalid email!"); return false; }
   if(password.length < 6){ alert("Password must be at least 6 characters!"); return false; }
 
-  alert("Login successful!");
   return true;
 }
 </script>
