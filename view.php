@@ -34,15 +34,12 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View Bookings - Event Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Bookings - Event Management System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -68,106 +65,96 @@ $result = $conn->query($sql);
 </nav>
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">All Event Bookings</h2>
-    
-    <!-- Results Count -->
-    <p class="text-center text-muted mb-3">
-        Showing <?php echo ($total_rows > 0) ? (($page - 1) * $limit + 1) : 0; ?> - 
-        <?php echo min($page * $limit, $total_rows); ?> of <?php echo $total_rows; ?> bookings
-    </p>
-    
-    <!-- Search Form -->
-    <form method="GET" class="mb-4">
-        <input type="hidden" name="page" value="1">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by Name, Email or Event" 
-                   value="<?php if(isset($_GET['search'])) echo $_GET['search']; ?>">
-            <button class="btn btn-primary" type="submit">Search</button>
-            <?php if(!empty($search)): ?>
-                <a href="view.php" class="btn btn-secondary">Clear</a>
-            <?php endif; ?>
-        </div>
-    </form>
-    
-    <!-- Bookings Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Event</th>
-                    <th>Tickets</th>
-                    <th>Message</th>
-                    <th>Booking Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>
-                            <td>{$row['id']}</td>
-                            <td>{$row['name']}</td>
-                            <td>{$row['email']}</td>
-                            <td>{$row['phone']}</td>
-                            <td>{$row['event']}</td>
-                            <td>{$row['tickets']}</td>
-                            <td>" . (empty($row['message']) ? 'No message' : substr($row['message'], 0, 50) . '...') . "</td>
-                            <td>" . date('M j, Y', strtotime($row['created_at'])) . "</td>
-                        </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='8' class='text-center py-4'>
-                        <i class='bi bi-inbox display-4 text-muted d-block mb-2'></i>
-                        <p class='text-muted'>" . 
-                        (!empty($search) ? 
-                         'No bookings match your search' : 
-                         'No bookings found') . 
-                        "</p>
-                    </td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
+<h2 class="text-center mb-4">All Event Bookings</h2>
 
-    <!-- Pagination -->
-    <?php if($total_pages > 1): ?>
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <!-- Previous Button -->
-            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $page-1; ?>&search=<?php echo urlencode($search); ?>">
-                    &laquo; Previous
-                </a>
-            </li>
-            
-            <!-- Page Numbers -->
-            <?php 
-            // Show limited page numbers for better UI
-            $start_page = max(1, $page - 2);
-            $end_page = min($total_pages, $start_page + 4);
-            
-            for($i = $start_page; $i <= $end_page; $i++): ?>
-                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>">
-                        <?php echo $i; ?>
-                    </a>
-                </li>
-            <?php endfor; ?>
-            
-            <!-- Next Button -->
-            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $page+1; ?>&search=<?php echo urlencode($search); ?>">
-                    Next &raquo;
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <?php endif; ?>
+<!-- Results Count -->
+<p class="text-center text-muted mb-3">
+    Showing <?php echo ($total_rows > 0) ? (($page - 1) * $limit + 1) : 0; ?> - 
+    <?php echo min($page * $limit, $total_rows); ?> of <?php echo $total_rows; ?> bookings
+</p>
+
+<!-- Search Form -->
+<form method="GET" class="mb-4">
+    <input type="hidden" name="page" value="1">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search by Name, Email or Event" 
+               value="<?php echo htmlspecialchars($search); ?>">
+        <button class="btn btn-primary" type="submit">Search</button>
+        <?php if(!empty($search)): ?>
+            <a href="view.php" class="btn btn-secondary">Clear</a>
+        <?php endif; ?>
+    </div>
+</form>
+
+<!-- Bookings Table -->
+<div class="table-responsive">
+<table class="table table-bordered table-striped table-hover">
+<thead class="table-dark">
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Event</th>
+<th>Tickets</th>
+<th>Message</th>
+<th>Booking Date</th>
+<th>Actions</th> <!-- Day 4 addition -->
+</tr>
+</thead>
+<tbody>
+<?php
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>
+            <td>{$row['id']}</td>
+            <td>{$row['name']}</td>
+            <td>{$row['email']}</td>
+            <td>{$row['phone']}</td>
+            <td>{$row['event']}</td>
+            <td>{$row['tickets']}</td>
+            <td>" . (empty($row['message']) ? 'No message' : substr($row['message'], 0, 50) . '...') . "</td>
+            <td>" . date('M j, Y', strtotime($row['created_at'])) . "</td>
+            <td>
+                <a href='update.php?id={$row['id']}' class='btn btn-primary btn-sm'>Edit</a>
+                <a href='delete.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this booking?');\">Delete</a>
+            </td>
+        </tr>";
+    }
+} else {
+    echo "<tr><td colspan='9' class='text-center py-4'>
+        <i class='bi bi-inbox display-4 text-muted d-block mb-2'></i>
+        <p class='text-muted'>" . (!empty($search) ? 'No bookings match your search' : 'No bookings found') . "</p>
+    </td></tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+
+<!-- Pagination -->
+<?php if($total_pages > 1): ?>
+<nav aria-label="Page navigation">
+<ul class="pagination justify-content-center">
+<li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+    <a class="page-link" href="?page=<?php echo $page-1; ?>&search=<?php echo urlencode($search); ?>">&laquo; Previous</a>
+</li>
+<?php
+$start_page = max(1, $page - 2);
+$end_page = min($total_pages, $start_page + 4);
+for($i=$start_page;$i<=$end_page;$i++):
+?>
+<li class="page-item <?php echo $i==$page?'active':''; ?>">
+    <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>"><?php echo $i; ?></a>
+</li>
+<?php endfor; ?>
+<li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+    <a class="page-link" href="?page=<?php echo $page+1; ?>&search=<?php echo urlencode($search); ?>">Next &raquo;</a>
+</li>
+</ul>
+</nav>
+<?php endif; ?>
+
 </div>
 
 <footer class="text-center">
