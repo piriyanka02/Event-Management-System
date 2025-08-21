@@ -151,3 +151,16 @@ footer {
   object-fit: cover; /* photo crop pannidum, distortion illa */
   border-radius: 10px; /* rounded edges for attractive look */
 }
+.pagination {
+  margin: 20px 0;
+}
+
+.pagination .page-link {
+  border-radius: 5px;
+  margin: 0 2px;
+}
+        
+.pagination .page-item.active .page-link {
+  background-color: #1e3c72;
+  border-color: #1e3c72;
+}
