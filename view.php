@@ -3,7 +3,7 @@
 include 'config.php';
 
 // Pagination settings
-$limit = 10; // Number of records per page
+$limit = 10; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
@@ -15,18 +15,16 @@ if(!empty($search)) {
     $search_condition = "WHERE name LIKE '%$search%' OR email LIKE '%$search%' OR event LIKE '%$search%'";
 }
 
-// Get total records for pagination
+// Total records for pagination
 $total_sql = "SELECT COUNT(*) as total FROM event_bookings $search_condition";
 $total_result = $conn->query($total_sql);
 $total_rows = $total_result->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $limit);
 
-// Adjust page if out of bounds
-if ($total_pages > 0 && $page > $total_pages) {
-    $page = $total_pages;
-}
+// Adjust page
+if ($total_pages > 0 && $page > $total_pages) $page = $total_pages;
 
-// Get data with pagination
+// Fetch bookings
 $sql = "SELECT * FROM event_bookings $search_condition ORDER BY id DESC LIMIT $limit OFFSET $offset";
 $result = $conn->query($sql);
 ?>
@@ -40,15 +38,19 @@ $result = $conn->query($sql);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* Day 5 additions only: hover highlight & pointer cursor */
+.table-hover tbody tr:hover { background-color: #f2f2f2; cursor: pointer; }
+th { cursor: pointer; }
+</style>
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- Navbar unchanged -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.html">Event Management</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -67,13 +69,11 @@ $result = $conn->query($sql);
 <div class="container mt-5">
 <h2 class="text-center mb-4">All Event Bookings</h2>
 
-<!-- Results Count -->
 <p class="text-center text-muted mb-3">
     Showing <?php echo ($total_rows > 0) ? (($page - 1) * $limit + 1) : 0; ?> - 
     <?php echo min($page * $limit, $total_rows); ?> of <?php echo $total_rows; ?> bookings
 </p>
 
-<!-- Search Form -->
 <form method="GET" class="mb-4">
     <input type="hidden" name="page" value="1">
     <div class="input-group">
@@ -86,40 +86,60 @@ $result = $conn->query($sql);
     </div>
 </form>
 
-<!-- Bookings Table -->
 <div class="table-responsive">
-<table class="table table-bordered table-striped table-hover">
+<table class="table table-bordered table-striped table-hover" id="bookingsTable">
 <thead class="table-dark">
 <tr>
 <th>ID</th>
-<th>Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Event</th>
+<th onclick="sortTable(1)">Name</th>
+<th onclick="sortTable(2)">Email</th>
+<th onclick="sortTable(3)">Phone</th>
+<th onclick="sortTable(4)">Event</th>
 <th>Tickets</th>
 <th>Message</th>
 <th>Booking Date</th>
-<th>Actions</th> <!-- Day 4 addition -->
+<th>Actions</th>
 </tr>
 </thead>
 <tbody>
 <?php
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>
-            <td>{$row['id']}</td>
-            <td>{$row['name']}</td>
-            <td>{$row['email']}</td>
-            <td>{$row['phone']}</td>
-            <td>{$row['event']}</td>
-            <td>{$row['tickets']}</td>
-            <td>" . (empty($row['message']) ? 'No message' : substr($row['message'], 0, 50) . '...') . "</td>
-            <td>" . date('M j, Y', strtotime($row['created_at'])) . "</td>
-            <td>
-                <a href='update.php?id={$row['id']}' class='btn btn-primary btn-sm'>Edit</a>
-                <a href='delete.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this booking?');\">Delete</a>
-            </td>
-        </tr>";
+    while($row = $result->fetch_assoc()) { ?>
+<tr>
+    <td><?php echo $row['id']; ?></td>
+    <td><?php echo $row['name']; ?></td>
+    <td><?php echo $row['email']; ?></td>
+    <td><?php echo $row['phone']; ?></td>
+    <td><?php echo $row['event']; ?></td>
+    <td><?php echo $row['tickets']; ?></td>
+    <td><?php echo empty($row['message']) ? 'No message' : substr($row['message'], 0, 50).'...'; ?></td>
+    <td><?php echo date('M j, Y', strtotime($row['created_at'])); ?></td>
+    <td>
+        <a href='update.php?id=<?php echo $row['id']; ?>' class='btn btn-primary btn-sm'>Edit</a>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $row['id']; ?>">Delete</button>
+
+        <!-- Bootstrap Modal for Delete -->
+        <div class="modal fade" id="deleteModal<?php echo $row['id']; ?>" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete booking for <?php echo $row['name']; ?>?
+              </div>
+              <div class="modal-footer">
+                <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Yes, Delete</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </td>
+</tr>
+<?php
     }
 } else {
     echo "<tr><td colspan='9' class='text-center py-4'>
@@ -132,7 +152,7 @@ if ($result->num_rows > 0) {
 </table>
 </div>
 
-<!-- Pagination -->
+<!-- Pagination unchanged -->
 <?php if($total_pages > 1): ?>
 <nav aria-label="Page navigation">
 <ul class="pagination justify-content-center">
@@ -162,8 +182,33 @@ for($i=$start_page;$i<=$end_page;$i++):
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Day 5 JS -->
+<script>
+// Table sorting function
+function sortTable(n) {
+  let table = document.getElementById("bookingsTable");
+  let switching = true;
+  while(switching) {
+    switching = false;
+    let rows = table.rows;
+    for (let i=1; i < rows.length-1; i++) {
+      let shouldSwitch = false;
+      let x = rows[i].getElementsByTagName("TD")[n];
+      let y = rows[i+1].getElementsByTagName("TD")[n];
+      if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if(shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
+
 </body>
 </html>
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>
